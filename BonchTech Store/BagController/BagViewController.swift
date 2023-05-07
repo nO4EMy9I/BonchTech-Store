@@ -13,6 +13,8 @@ class BagViewController: UIViewController {
     var userAction: Product!
     var products = [Product]()
     var bagProducts = [BagProduct]()
+    var qq: Int!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,13 +39,37 @@ class BagViewController: UIViewController {
 extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
+        print("Начало тут")
+        
+        bagProducts.removeAll()
+        products.removeAll()
         return CoreDataManager.shared.fetchProducts().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bagCell", for: indexPath) as! ProductBagCollectionViewCell
-
+        
+        let product = CoreDataManager.shared.fetchProducts()
+        self.bagProducts.append(product[indexPath.row])
+        
+        APIManager.shared.getMultipleProduct(category: product[indexPath.row].category!, product: self.bagProducts[indexPath.row].nameProduct!) { product in
+            
+            print(self.bagProducts)
+            
+            print(indexPath.row)
+            
+            print(self.bagProducts[indexPath.row].nameProduct)
+            
+            print("________________")
+            
+            self.products.append(product!)
+            
+            print(self.products)
+        }
+        
+        cell.cellDesign(product: product[indexPath.row], cell: cell)
+        
         return cell
     }
     
@@ -52,8 +78,17 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
         CollectionView.reloadData()
         
         let userAction = products[indexPath.item]
-    
+        
+        //print("fdgfbhgstearwrfvgsfera")
+        
+        self.qq = indexPath.row
         self.userAction = userAction
+        
+//        print(bagProducts)
+//
+//        print("____________________________")
+//
+//        print(products)
         
         performSegue(withIdentifier: "toProductViewController", sender: userAction)
     }
@@ -82,7 +117,7 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
            let destinationVC = segue.destination as! ProductViewController
            guard CollectionView.indexPathsForSelectedItems != nil else { return }
            destinationVC.selectedProduct = userAction
-           destinationVC.way.append(bagProducts[0].category ?? "")
+           destinationVC.way.append(bagProducts[qq].category ?? "")
        }
     }
     

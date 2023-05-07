@@ -81,7 +81,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     func addToCart(_ product: Product) {
         if CoreDataManager.shared.fetchProduct(product.name) == nil {
-            CoreDataManager.shared.createProduct(product.name, category)
+            CoreDataManager.shared.createProduct(name: product.name, category: category, price: Int16(product.currentPrice))
             print("товара не было")
         } else {
             let count = CoreDataManager.shared.fetchProduct(product.name)!.count

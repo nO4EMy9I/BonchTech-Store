@@ -11,8 +11,6 @@ class ProductViewController: UIViewController {
     
     var selectedProduct: Product!
     var way:[String] = []
-    
-    var testProduct: Product!
 
     @IBOutlet weak var CollectionView: UICollectionView!
     @IBOutlet weak var ProductRatingsLabel: UILabel!
@@ -28,47 +26,25 @@ class ProductViewController: UIViewController {
         self.CollectionView.dataSource = self
         self.CollectionView.delegate = self
         
-        APIManager.shared.getMultipleProduct(category: way.first ?? "", product: selectedProduct.name) { product in
-            self.testProduct = product!
-            
-            self.NameProduct.text = self.testProduct.name
-            self.CurrentPrice.text = String(self.testProduct.currentPrice) + "₽"
-            
-            if self.testProduct.sale == false{
-                self.OldPrice.isHidden = true
-                let constraint = NSLayoutConstraint(item: self.CurrentPrice!, attribute: .top, relatedBy: .equal, toItem: self.NameProduct, attribute: .bottom, multiplier: 1, constant: 8)
-                NSLayoutConstraint.activate([constraint])
-            } else {
-                self.OldPrice.attributedText = NSAttributedString(string: "\(String(self.testProduct.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
-            }
-            //OldPrice.text = String(selectedProduct.oldPrice)
-            
-            let rating = (Double.random(in: 1.0...5.0) * 10).rounded(.toNearestOrAwayFromZero) / 10
-            
-            self.ProductRatingsLabel.text = "Оценка: \(rating) из 5"
-            
-            self.CollectionView.reloadData()
-        }
-        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         CollectionView.collectionViewLayout = layout
         
-//        NameProduct.text = testProduct.name
-//        CurrentPrice.text = String(testProduct.currentPrice) + "₽"
-//
-//        if testProduct.sale == false{
-//            OldPrice.isHidden = true
-//            let constraint = NSLayoutConstraint(item: CurrentPrice!, attribute: .top, relatedBy: .equal, toItem: NameProduct, attribute: .bottom, multiplier: 1, constant: 8)
-//            NSLayoutConstraint.activate([constraint])
-//        } else {
-//            self.OldPrice.attributedText = NSAttributedString(string: "\(String(testProduct.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
-//        }
-//        //OldPrice.text = String(selectedProduct.oldPrice)
-//
-//        let rating = (Double.random(in: 1.0...5.0) * 10).rounded(.toNearestOrAwayFromZero) / 10
-//
-//        ProductRatingsLabel.text = "Оценка: \(rating) из 5"
+        NameProduct.text = selectedProduct.name
+        CurrentPrice.text = String(selectedProduct.currentPrice) + "₽"
+        
+        if selectedProduct.sale == false{
+            OldPrice.isHidden = true
+            let constraint = NSLayoutConstraint(item: CurrentPrice!, attribute: .top, relatedBy: .equal, toItem: NameProduct, attribute: .bottom, multiplier: 1, constant: 8)
+            NSLayoutConstraint.activate([constraint])
+        } else {
+            self.OldPrice.attributedText = NSAttributedString(string: "\(String(selectedProduct.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+        }
+        //OldPrice.text = String(selectedProduct.oldPrice)
+        
+        let rating = (Double.random(in: 1.0...5.0) * 10).rounded(.toNearestOrAwayFromZero) / 10
+        
+        ProductRatingsLabel.text = "Оценка: \(rating) из 5"
     }
     
 
@@ -80,18 +56,13 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if testProduct == nil {
-            return 0
-        } else {
-            return testProduct.productImages.count
-        }
-
+        return selectedProduct.productImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! ProductPhotoCollectionViewCell
         
-        APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: testProduct.productImages[indexPath.row]), completeon: { image in
+        APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: selectedProduct.productImages[indexPath.row]), completeon: { image in
             
             cell.ProductPhotoImage.image = image
         })

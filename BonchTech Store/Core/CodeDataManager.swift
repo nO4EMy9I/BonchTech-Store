@@ -26,12 +26,13 @@ public final class CoreDataManager: NSObject{
 //        }
 //    }
     
-    public func createProduct(_ nameProduct: String, _ category: String) {
+    public func createProduct(name nameProduct: String, category: String, price: Int16 ) {
         guard let productEntityDescription = NSEntityDescription.entity(forEntityName: "BagProduct", in: context) else { return }
         let product = BagProduct(entity: productEntityDescription, insertInto: context)
         product.nameProduct = nameProduct
         product.count = 1
         product.category = category
+        product.price = price
         
         appDelegate.saveContext()
     }

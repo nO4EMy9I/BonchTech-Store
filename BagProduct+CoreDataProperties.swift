@@ -23,6 +23,7 @@ extension BagProduct {
     @NSManaged public var nameProduct: String?
     @NSManaged public var count: Int16
     @NSManaged public var category: String?
+    @NSManaged public var price: Int16
 }
 
 extension BagProduct : Identifiable {
