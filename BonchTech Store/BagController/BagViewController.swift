@@ -27,6 +27,8 @@ class BagViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        bagProducts = CoreDataManager.shared.fetchProducts()
         self.CollectionView.reloadData()
     }
     
@@ -41,34 +43,29 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         print("Начало тут")
-        
-        bagProducts.removeAll()
+
+        bagProducts = CoreDataManager.shared.fetchProducts()
         products.removeAll()
-        return CoreDataManager.shared.fetchProducts().count
+        
+        return bagProducts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bagCell", for: indexPath) as! ProductBagCollectionViewCell
         
         let product = CoreDataManager.shared.fetchProducts()
-        self.bagProducts.append(product[indexPath.row])
+//        print(product)
+//        self.bagProducts.append(product[indexPath.row])
         
-        APIManager.shared.getMultipleProduct(category: product[indexPath.row].category!, product: self.bagProducts[indexPath.row].nameProduct!) { product in
-            
-            print(self.bagProducts)
-            
-            print(indexPath.row)
-            
-            print(self.bagProducts[indexPath.row].nameProduct)
-            
-            print("________________")
-            
-            self.products.append(product!)
-            
-            print(self.products)
+        
+        if let gg = product[indexPath.row].category {
+            APIManager.shared.getMultipleProduct(category: product[indexPath.row].category ?? "", product: self.bagProducts[indexPath.row].nameProduct ?? "" ) { product in
+                
+                self.products.insert(product!, at: 0)
+            }
         }
         
-        cell.cellDesign(product: product[indexPath.row], cell: cell)
+        cell.cellDesign(product: bagProducts[indexPath.row], cell: cell)
         
         return cell
     }
@@ -79,16 +76,8 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
         
         let userAction = products[indexPath.item]
         
-        //print("fdgfbhgstearwrfvgsfera")
-        
         self.qq = indexPath.row
         self.userAction = userAction
-        
-//        print(bagProducts)
-//
-//        print("____________________________")
-//
-//        print(products)
         
         performSegue(withIdentifier: "toProductViewController", sender: userAction)
     }
@@ -116,7 +105,15 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
        if segue.identifier == "toProductViewController"{
            let destinationVC = segue.destination as! ProductViewController
            guard CollectionView.indexPathsForSelectedItems != nil else { return }
+           
+           for i in products{
+               print(i.name)
+           }
+           
+           print("___")
+           
            destinationVC.selectedProduct = userAction
+           //destinationVC.way.append()
            destinationVC.way.append(bagProducts[qq].category ?? "")
        }
     }
