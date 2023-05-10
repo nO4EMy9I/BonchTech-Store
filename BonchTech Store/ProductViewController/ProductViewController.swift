@@ -10,6 +10,7 @@ import UIKit
 class ProductViewController: UIViewController {
     
     var selectedProduct: Product!
+    var product: Product!
     var way:[String] = []
 
     @IBOutlet weak var CollectionView: UICollectionView!
@@ -21,6 +22,14 @@ class ProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        APIManager.shared.getMultipleProduct(category: way[0], product: self.selectedProduct.name) { product in
+            
+            self.product = product!
+            
+            self.NameProduct.text = self.product.name
+            self.CurrentPrice.text = "\(self.product.currentPrice)" + "₽"
+        }
+        
         way.append(selectedProduct.name)
 
         self.CollectionView.dataSource = self
@@ -30,16 +39,16 @@ class ProductViewController: UIViewController {
         layout.scrollDirection = .horizontal
         CollectionView.collectionViewLayout = layout
         
-        NameProduct.text = selectedProduct.name
-        CurrentPrice.text = String(selectedProduct.currentPrice) + "₽"
+//        NameProduct.text = product?.name
+//        CurrentPrice.text = "\(product?.currentPrice)" + "₽"
         
-        if selectedProduct.sale == false{
-            OldPrice.isHidden = true
-            let constraint = NSLayoutConstraint(item: CurrentPrice!, attribute: .top, relatedBy: .equal, toItem: NameProduct, attribute: .bottom, multiplier: 1, constant: 8)
-            NSLayoutConstraint.activate([constraint])
-        } else {
-            self.OldPrice.attributedText = NSAttributedString(string: "\(String(selectedProduct.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
-        }
+//        if product.sale == false{
+//            OldPrice.isHidden = true
+//            let constraint = NSLayoutConstraint(item: CurrentPrice!, attribute: .top, relatedBy: .equal, toItem: NameProduct, attribute: .bottom, multiplier: 1, constant: 8)
+//            NSLayoutConstraint.activate([constraint])
+//        } else {
+//            self.OldPrice.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+//        }
         //OldPrice.text = String(selectedProduct.oldPrice)
         
         let rating = (Double.random(in: 1.0...5.0) * 10).rounded(.toNearestOrAwayFromZero) / 10
@@ -56,13 +65,13 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return selectedProduct.productImages.count
+        return product?.productImages.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! ProductPhotoCollectionViewCell
         
-        APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: selectedProduct.productImages[indexPath.row]), completeon: { image in
+        APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: product.productImages[indexPath.row]), completeon: { image in
             
             cell.ProductPhotoImage.image = image
         })
