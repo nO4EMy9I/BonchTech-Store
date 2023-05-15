@@ -11,11 +11,16 @@ import UIKit
 class MainViewController: UIViewController {
 
     var promotions = [Promotion]()
+    var userAction: Promotion!
     
     @IBOutlet weak var PromotionsCollection: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        PromotionsCollection.dataSource = self
+        PromotionsCollection.delegate = self
+        PromotionsCollection.showsHorizontalScrollIndicator = false
 
         APIManager.shared.getMultiplePromotion(document: "sale", completion: {products in
             guard products != nil else {return}
@@ -53,7 +58,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "promoCell", for: indexPath) as! PromotionsCollectionViewCell
         
-        APIManager.shared.getImage(imageSection: "pic", imageName: String(describing: self.promotions.first?.name ?? ""), completeon: { image in
+        APIManager.shared.getImage(imageSection: "pic", imageName: String(describing: self.promotions[indexPath.row].name ?? ""), completeon: { image in
 
             cell.PromotionsImage.image = image
         })
@@ -65,8 +70,26 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let userAction = promotions[indexPath.item]
+        
+        self.userAction = userAction
+        
+        performSegue(withIdentifier: "toPromotionViewController", sender: userAction)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: 227, height: 128)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+       if segue.identifier == "toPromotionViewController"{
+           let destinationVC = segue.destination as! PromotionViewController
+           guard PromotionsCollection.indexPathsForSelectedItems != nil else { return }
+           destinationVC.promotion = userAction
+       }
     }
 
 }

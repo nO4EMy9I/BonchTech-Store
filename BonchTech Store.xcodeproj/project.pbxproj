@@ -18,6 +18,8 @@
 		9618148129F8258900E8AC75 /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9618148029F8258900E8AC75 /* CommentsTableViewController.swift */; };
 		9618148329F825DE00E8AC75 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9618148229F825DE00E8AC75 /* CommentTableViewCell.swift */; };
 		9618148529F835C700E8AC75 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9618148429F835C700E8AC75 /* Comment.swift */; };
+		96247D512A10117200090CE9 /* PromotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96247D502A10117200090CE9 /* PromotionViewController.swift */; };
+		96354E842A0D65470025D393 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354E832A0D65470025D393 /* OrderViewController.swift */; };
 		9641750429DB07A300308D84 /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9641750329DB07A300308D84 /* ProductViewController.swift */; };
 		9641750629DB080F00308D84 /* ProductPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9641750529DB080F00308D84 /* ProductPhotoCollectionViewCell.swift */; };
 		9645929429FA9FAD0026DB86 /* CodeDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9645929329FA9FAD0026DB86 /* CodeDataManager.swift */; };
@@ -73,6 +75,8 @@
 		9618148029F8258900E8AC75 /* CommentsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
 		9618148229F825DE00E8AC75 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		9618148429F835C700E8AC75 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		96247D502A10117200090CE9 /* PromotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViewController.swift; sourceTree = "<group>"; };
+		96354E832A0D65470025D393 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		9641750329DB07A300308D84 /* ProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
 		9641750529DB080F00308D84 /* ProductPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		9645929329FA9FAD0026DB86 /* CodeDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeDataManager.swift; sourceTree = "<group>"; };
@@ -177,6 +181,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		96247D4F2A10111D00090CE9 /* Promotion */ = {
+			isa = PBXGroup;
+			children = (
+				96247D502A10117200090CE9 /* PromotionViewController.swift */,
+			);
+			path = Promotion;
+			sourceTree = "<group>";
+		};
+		96354E822A0D65170025D393 /* OrderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				96354E832A0D65470025D393 /* OrderViewController.swift */,
+			);
+			path = OrderViewController;
+			sourceTree = "<group>";
+		};
 		9641750229DB077E00308D84 /* ProductViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				96BF1DFC29BFAC5B00FED886 /* Main.storyboard */,
+				96247D4F2A10111D00090CE9 /* Promotion */,
+				96354E822A0D65170025D393 /* OrderViewController */,
 				96A2934129F9307700E89145 /* BagController */,
 				96E503CA29F8423000D666A4 /* Comment */,
 				965C30B929DB64F900849850 /* SpecificationsProduct */,
@@ -454,6 +476,7 @@
 				965C30B829DB64EC00849850 /* SpecificationsProductTableViewController.swift in Sources */,
 				965C30BB29DB652300849850 /* SpecificationsProfuctTableViewCell.swift in Sources */,
 				9645929429FA9FAD0026DB86 /* CodeDataManager.swift in Sources */,
+				96354E842A0D65470025D393 /* OrderViewController.swift in Sources */,
 				9612817B29F2A1FA00754999 /* UITextView+Placeholder.swift in Sources */,
 				9618148329F825DE00E8AC75 /* CommentTableViewCell.swift in Sources */,
 				968B1CF429D85A1B0038ADA8 /* CategoryViewController.swift in Sources */,
@@ -469,6 +492,7 @@
 				9618148129F8258900E8AC75 /* CommentsTableViewController.swift in Sources */,
 				9612817929F2961400754999 /* CommentViewController.swift in Sources */,
 				96BF1DF729BFAC5B00FED886 /* AppDelegate.swift in Sources */,
+				96247D512A10117200090CE9 /* PromotionViewController.swift in Sources */,
 				96773B9729DC337800DDD53E /* Specifications.swift in Sources */,
 				968B1CFA29D85ECB0038ADA8 /* ProductCategoryViewCell.swift in Sources */,
 				968B1CF829D85B950038ADA8 /* Promotion.swift in Sources */,

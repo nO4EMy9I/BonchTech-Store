@@ -12,12 +12,14 @@ class ProductViewController: UIViewController {
     var selectedProduct: Product!
     var product: Product!
     var way:[String] = []
+    var feedback = [Feedback]()
 
     @IBOutlet weak var CollectionView: UICollectionView!
     @IBOutlet weak var ProductRatingsLabel: UILabel!
     @IBOutlet weak var NameProduct: UILabel!
     @IBOutlet weak var CurrentPrice: UILabel!
     @IBOutlet weak var OldPrice: UILabel!
+    @IBOutlet weak var CountCommentLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,13 @@ class ProductViewController: UIViewController {
             
             self.NameProduct.text = self.product.name
             self.CurrentPrice.text = "\(self.product.currentPrice)" + "₽"
+            
+            if product?.sale == true{
+                self.OldPrice.attributedText = NSAttributedString(string: "\(String(product!.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+            } else {
+                self.OldPrice.isHidden = true
+            }
+            self.CollectionView.reloadData()
         }
         
         way.append(selectedProduct.name)
@@ -51,14 +60,15 @@ class ProductViewController: UIViewController {
 //        }
         //OldPrice.text = String(selectedProduct.oldPrice)
         
-        let rating = (Double.random(in: 1.0...5.0) * 10).rounded(.toNearestOrAwayFromZero) / 10
-        
-        ProductRatingsLabel.text = "Оценка: \(rating) из 5"
+        APIManager.shared.getMultipleFeedback(category: way[0], product: way[1]) { feedback in
+            guard feedback != nil else {return}
+            
+            self.feedback = feedback!
+            self.CountCommentLabel.text = "Отзывы: \(feedback!.count)"
+            
+            self.ProductRatingsLabel.text = "Оценка: " + String(format: "%.1f", Double(feedback!.reduce(0) { $0 + $1.rating }) / Double(feedback!.count))
+        }
     }
-    
-
-
-
 }
 
 extension ProductViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -75,7 +85,6 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             
             cell.ProductPhotoImage.image = image
         })
-        
         return cell
     }
     
@@ -111,7 +120,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         
         if segue.identifier == "toCommentsTableViewController"{
            let destinationVC = segue.destination as! CommentsTableViewController
-           destinationVC.way += way
+            destinationVC.feedback = self.feedback
         }
+        
     }
 }

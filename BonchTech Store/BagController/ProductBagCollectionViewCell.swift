@@ -18,6 +18,8 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var OldPrice: UILabel!
     @IBOutlet weak var CurrentPrice: UILabel!
     
+    weak var delegate: ProductCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -26,12 +28,18 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 10
     }
     
-    func cellDesign(product: BagProduct, cell: ProductBagCollectionViewCell){
+    func cellDesign(bagProduct: BagProduct, product: Product, cell: ProductBagCollectionViewCell){
         
-        self.product = product
+        self.product = bagProduct
         
-        ProductName.text = product.nameProduct
-        ProductCount.text = String(product.count)
+        ProductName.text = bagProduct.nameProduct
+        ProductCount.text = String(bagProduct.count)
+        CurrentPrice.text = String(product.currentPrice) + "₽"
+        if product.sale == true{
+            self.OldPrice.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+        } else {
+            self.OldPrice.isHidden = true
+        }
     }
 
     
@@ -43,6 +51,7 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
         }
         
         ProductCount.text = "\(product.count)"
+        delegate?.didUpdateProductQuantity()
         collectionView.reloadData()
         
     }
@@ -56,6 +65,7 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
             guard let collectionView = self.superview as? UICollectionView else {
                 return
             }
+            delegate?.didUpdateProductQuantity()
             collectionView.reloadData()
             
             
@@ -78,6 +88,7 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
             guard let collectionView = self.superview as? UICollectionView else {
                 return
             }
+            delegate?.didUpdateProductQuantity()
             collectionView.reloadData()
         }
     }

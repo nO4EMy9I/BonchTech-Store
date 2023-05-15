@@ -26,7 +26,7 @@ class CommentViewController: UIViewController {
     }
     
     @IBAction func addComment(_ sender: Any) {
-        APIManager.shared.addDocument(category: way[0], product: way[1], rating: Int(Rating.titleForSegment(at: Rating.selectedSegmentIndex) ?? "0")!, comment: CommentTextView.text, user: "user")
+        APIManager.shared.addComment(category: way[0], product: way[1], rating: Int(Rating.titleForSegment(at: Rating.selectedSegmentIndex) ?? "0")!, comment: CommentTextView.text, user: "user")
         dismiss(animated: true, completion: nil)
      }
 }

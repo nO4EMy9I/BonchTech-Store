@@ -150,8 +150,7 @@ class APIManager {
                     
                     let product = document.data()
                     
-                    promotions.append(Promotion(name: product["name"] as! String))
-                    //print(test)
+                    promotions.append(Promotion(name: product["name"] as? String ?? "", description: product["description"] as? String ?? ""))
                 }
             }
             completion(promotions)
@@ -159,7 +158,7 @@ class APIManager {
     }
     
     // Отправка на сервер информации о заказе
-    func addDocument(category: String, product: String, rating: Int, comment: String, user: String) -> String {
+    func addComment(category: String, product: String, rating: Int, comment: String, user: String) -> String {
 
             let db = APIManager.configureFB()
             
@@ -179,6 +178,31 @@ class APIManager {
                 }
             }
             return "\(ref!.documentID)"
+    }
+    
+    func addDocument(name: String, phoneNumber: Int, city: String, address: String, idProducts: [String]) -> String {
+
+        let db = APIManager.configureFB()
+        
+        var ref: DocumentReference? = nil
+        
+// Добавление документа
+        ref = db.collection("order").document("user").collection("order").addDocument(data: [
+            "name": name,
+            "phone number": phoneNumber,
+            "city": city,
+            "address": address,
+            "products": idProducts
+            
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+        return "\(ref!.documentID )"
     }
     
     func getImage(imageSection: String, imageName: String, completeon: @escaping(UIImage) -> Void) {

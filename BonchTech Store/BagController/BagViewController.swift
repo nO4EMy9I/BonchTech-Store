@@ -7,9 +7,17 @@
 
 import UIKit
 
+protocol ProductCellDelegate: AnyObject {
+    func didUpdateProductQuantity()
+}
+
+
 class BagViewController: UIViewController {
 
     @IBOutlet weak var CollectionView: UICollectionView!
+    @IBOutlet weak var PriceLabel: UILabel!
+    @IBOutlet weak var PlaceOrderButton: UIButton!
+    
     var userAction: Product!
     var products = [Product]()
     var bagProducts = [BagProduct]()
@@ -24,21 +32,52 @@ class BagViewController: UIViewController {
         self.CollectionView.delegate = self
         self.CollectionView.layer.cornerRadius = 10
         self.CollectionView.showsVerticalScrollIndicator = false
+        self.PlaceOrderButton.backgroundColor = .systemOrange
+        self.PlaceOrderButton.tintColor = .white
+        self.PlaceOrderButton.layer.cornerRadius = 15
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
         bagProducts = CoreDataManager.shared.fetchProducts()
+        
+        var totalPrice = 0
+        
+        for product in bagProducts {
+            totalPrice += Int(product.price) * Int(product.count)
+        }
+
+        PriceLabel.text = "Цена товаров: " + String(totalPrice) + "₽"
+        
         self.CollectionView.reloadData()
     }
     
     @IBAction func Test(_ sender: Any) {
         CoreDataManager.shared.deleteAllProduct()
     }
+
     
 }
 
-extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegate, ProductCellDelegate{
+    
+    func didUpdateProductQuantity() {
+        updateTotalPrice()
+    }
+    
+    func updateTotalPrice() {
+        var totalPrice = 0
+        //bagProducts = CoreDataManager.shared.fetchProducts()
+        
+        
+        for product in bagProducts {
+            totalPrice += Int(product.price) * Int(product.count)
+        }
+        
+        print(totalPrice)
+        
+        PriceLabel.text = "Цена товаров: \(totalPrice)₽"
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -52,20 +91,21 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bagCell", for: indexPath) as! ProductBagCollectionViewCell
-        
+        cell.delegate = self
         let product = CoreDataManager.shared.fetchProducts()
 //        print(product)
 //        self.bagProducts.append(product[indexPath.row])
         
         
-        if let gg = product[indexPath.row].category {
+        if product[indexPath.row].category != nil {
             APIManager.shared.getMultipleProduct(category: product[indexPath.row].category ?? "", product: self.bagProducts[indexPath.row].nameProduct ?? "" ) { product in
                 
                 self.products.insert(product!, at: 0)
+                cell.cellDesign(bagProduct: self.bagProducts[indexPath.row], product: self.products.first!, cell: cell)
             }
         }
         
-        cell.cellDesign(product: bagProducts[indexPath.row], cell: cell)
+        //cell.cellDesign(bagProduct: bagProducts[indexPath.row], product: products.first, cell: cell)
         
         return cell
     }
@@ -106,16 +146,15 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
            let destinationVC = segue.destination as! ProductViewController
            guard CollectionView.indexPathsForSelectedItems != nil else { return }
            
-           for i in products{
-               print(i.name)
-           }
-           
-           print("___")
-           
            destinationVC.selectedProduct = userAction
            //destinationVC.way.append()
            destinationVC.way.append(bagProducts[qq].category ?? "")
        }
+        
+        if segue.identifier == "toOrderViewController"{
+            let destinationVC = segue.destination as! OrderViewController
+            destinationVC.boughtProductsList = self.products
+        }
     }
     
 }

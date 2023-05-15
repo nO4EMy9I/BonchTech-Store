@@ -9,4 +9,5 @@ import Foundation
 
 struct Promotion{
     let name: String
+    let description: String
 }
