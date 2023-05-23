@@ -10,21 +10,21 @@ import UIKit
 class PromotionViewController: UIViewController {
 
     
-    @IBOutlet weak var PromotionImage: UIImageView!
-    @IBOutlet weak var PromotionName: UILabel!
-    @IBOutlet weak var PromotionDescription: UILabel!
+    @IBOutlet weak var promotionImage: UIImageView!
+    @IBOutlet weak var promotionNameLabel: UILabel!
+    @IBOutlet weak var promotionDescriptionLabel: UILabel!
     
     var promotion: Promotion!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.PromotionName.text = promotion.name
-        self.PromotionDescription.text = promotion.description
+        self.promotionNameLabel.text = promotion.name
+        self.promotionDescriptionLabel.text = promotion.description
         
         APIManager.shared.getImage(imageSection: "pic", imageName: String(describing: self.promotion.name), completeon: { image in
 
-            self.PromotionImage.image = image
+            self.promotionImage.image = image
         })
     }
     

@@ -11,7 +11,6 @@ private let reuseIdentifier = "Cell"
 
 class CatalogCollectionViewController: UICollectionViewController {
 
-    
     var userAction: Product!
     var products = [Product]()
     var selectedCategory: ProductCategory!

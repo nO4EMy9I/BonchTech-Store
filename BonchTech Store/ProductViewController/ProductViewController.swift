@@ -14,12 +14,12 @@ class ProductViewController: UIViewController {
     var way:[String] = []
     var feedback = [Feedback]()
 
-    @IBOutlet weak var CollectionView: UICollectionView!
-    @IBOutlet weak var ProductRatingsLabel: UILabel!
-    @IBOutlet weak var NameProduct: UILabel!
-    @IBOutlet weak var CurrentPrice: UILabel!
-    @IBOutlet weak var OldPrice: UILabel!
-    @IBOutlet weak var CountCommentLabel: UILabel!
+    @IBOutlet weak var imageCollectionView: UICollectionView!
+    @IBOutlet weak var productRatingsLabel: UILabel!
+    @IBOutlet weak var productNameLabel: UILabel!
+    @IBOutlet weak var currentPriceLabel: UILabel!
+    @IBOutlet weak var oldPriceLabel: UILabel!
+    @IBOutlet weak var countCommentLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,25 +28,25 @@ class ProductViewController: UIViewController {
             
             self.product = product!
             
-            self.NameProduct.text = self.product.name
-            self.CurrentPrice.text = "\(self.product.currentPrice)" + "₽"
+            self.productNameLabel.text = self.product.name
+            self.currentPriceLabel.text = "\(self.product.currentPrice)" + "₽"
             
             if product?.sale == true{
-                self.OldPrice.attributedText = NSAttributedString(string: "\(String(product!.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+                self.oldPriceLabel.attributedText = NSAttributedString(string: "\(String(product!.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
             } else {
-                self.OldPrice.isHidden = true
+                self.oldPriceLabel.isHidden = true
             }
-            self.CollectionView.reloadData()
+            self.imageCollectionView.reloadData()
         }
-        
+                
         way.append(selectedProduct.name)
 
-        self.CollectionView.dataSource = self
-        self.CollectionView.delegate = self
+        self.imageCollectionView.dataSource = self
+        self.imageCollectionView.delegate = self
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        CollectionView.collectionViewLayout = layout
+        imageCollectionView.collectionViewLayout = layout
         
 //        NameProduct.text = product?.name
 //        CurrentPrice.text = "\(product?.currentPrice)" + "₽"
@@ -64,9 +64,9 @@ class ProductViewController: UIViewController {
             guard feedback != nil else {return}
             
             self.feedback = feedback!
-            self.CountCommentLabel.text = "Отзывы: \(feedback!.count)"
+            self.countCommentLabel.text = "Отзывы: \(feedback!.count)"
             
-            self.ProductRatingsLabel.text = "Оценка: " + String(format: "%.1f", Double(feedback!.reduce(0) { $0 + $1.rating }) / Double(feedback!.count))
+            self.productRatingsLabel.text = "Оценка: " + String(format: "%.1f", Double(feedback!.reduce(0) { $0 + $1.rating }) / Double(feedback!.count))
         }
     }
 }
@@ -83,7 +83,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         
         APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: product.productImages[indexPath.row]), completeon: { image in
             
-            cell.ProductPhotoImage.image = image
+            cell.productPhotoImage.image = image
         })
         return cell
     }

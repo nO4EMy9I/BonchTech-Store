@@ -14,9 +14,7 @@ class OrderViewController: UIViewController {
     @IBOutlet var phoneNumberTextField: UITextField!
     @IBOutlet var cityTextField: UITextField!
     @IBOutlet var addressTextField: UITextField!
-    
-    //weak var delegate: DataDelegate?
-    
+
     var boughtProductsList = [Product]()
     var idBoughtProducts = [Int]()
     
@@ -28,9 +26,6 @@ class OrderViewController: UIViewController {
         self.phoneNumberTextField.delegate = self
         self.cityTextField.delegate = self
         self.addressTextField.delegate = self
-        
-//        extractingProductId()
-        
     }
     
     
@@ -41,20 +36,16 @@ class OrderViewController: UIViewController {
     }
     
     func order(){
+        guard !errorAlert() else { return }
         
-        if errorAlert(){
-            
-        } else {
-            
-            doneAlert()
-            
-            nameTextField.text = ""
-            phoneNumberTextField.text = ""
-            cityTextField.text = ""
-            addressTextField.text = ""
-        }
+        doneAlert()
+        nameTextField.text = ""
+        phoneNumberTextField.text = ""
+        cityTextField.text = ""
+        addressTextField.text = ""
     }
     
+    //Стиль aletr
     func alert(title: String, message: String){
         let alert = UIAlertController(title: "\(title)", message: "\(message)", preferredStyle: .alert)
         let okButton = UIAlertAction(title: "Ok", style: .default)
@@ -63,13 +54,13 @@ class OrderViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    // Вызов alert с ошибкой
     func errorAlert() -> Bool{
         
         if nameTextField.text == "" || phoneNumberTextField.text == "" || cityTextField.text == "" || addressTextField.text == "" {
             alert(title: "Ошибка", message: "Заполните все поля")
             
             return true
-            
         } else if Int(nameTextField.text!) != nil || Int(phoneNumberTextField.text!) == nil || Int(cityTextField.text!) != nil {
 
             alert(title: "Ошибка", message: "Заполните поля правильно")
@@ -79,6 +70,7 @@ class OrderViewController: UIViewController {
         }
     }
     
+    // Оформление заказа и вызов alert с номером заказа
     func doneAlert(){
         
         let phoneNumber:Int = Int(phoneNumberTextField.text!) ?? 0
@@ -98,6 +90,7 @@ class OrderViewController: UIViewController {
 
 extension OrderViewController: UITextFieldDelegate{
     
+    //Скрытие клавиатуры
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

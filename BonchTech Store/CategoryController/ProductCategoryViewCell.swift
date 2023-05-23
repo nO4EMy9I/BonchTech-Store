@@ -9,6 +9,5 @@ import UIKit
 
 class ProductCategoryViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var CategoryTitle: UILabel!
-    
+    @IBOutlet weak var categoryLabel: UILabel!
 }

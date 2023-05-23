@@ -14,27 +14,27 @@ protocol ProductCellDelegate: AnyObject {
 
 class BagViewController: UIViewController {
 
-    @IBOutlet weak var CollectionView: UICollectionView!
-    @IBOutlet weak var PriceLabel: UILabel!
-    @IBOutlet weak var PlaceOrderButton: UIButton!
+    @IBOutlet weak var bagCollectionView: UICollectionView!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var placeOrderButton: UIButton!
     
     var userAction: Product!
     var products = [Product]()
     var bagProducts = [BagProduct]()
-    var qq: Int!
+    var position: Int!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        self.CollectionView.register(UINib(nibName: "ProductBagCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "bagCell")
-        self.CollectionView.dataSource = self
-        self.CollectionView.delegate = self
-        self.CollectionView.layer.cornerRadius = 10
-        self.CollectionView.showsVerticalScrollIndicator = false
-        self.PlaceOrderButton.backgroundColor = .systemOrange
-        self.PlaceOrderButton.tintColor = .white
-        self.PlaceOrderButton.layer.cornerRadius = 15
+        self.bagCollectionView.dataSource = self
+        self.bagCollectionView.delegate = self
+        self.bagCollectionView.layer.cornerRadius = 10
+        self.bagCollectionView.showsVerticalScrollIndicator = false
+        self.placeOrderButton.backgroundColor = .systemOrange
+        self.placeOrderButton.tintColor = .white
+        self.placeOrderButton.layer.cornerRadius = 15
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,9 +47,9 @@ class BagViewController: UIViewController {
             totalPrice += Int(product.price) * Int(product.count)
         }
 
-        PriceLabel.text = "Цена товаров: " + String(totalPrice) + "₽"
+        priceLabel.text = "Цена товаров: " + String(totalPrice) + "₽"
         
-        self.CollectionView.reloadData()
+        self.bagCollectionView.reloadData()
     }
     
     @IBAction func Test(_ sender: Any) {
@@ -65,6 +65,7 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
         updateTotalPrice()
     }
     
+    // Обновление суммы товаров в корзине
     func updateTotalPrice() {
         var totalPrice = 0
         //bagProducts = CoreDataManager.shared.fetchProducts()
@@ -76,12 +77,10 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
         
         print(totalPrice)
         
-        PriceLabel.text = "Цена товаров: \(totalPrice)₽"
+        priceLabel.text = "Цена товаров: \(totalPrice)₽"
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        print("Начало тут")
 
         bagProducts = CoreDataManager.shared.fetchProducts()
         products.removeAll()
@@ -112,11 +111,11 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        CollectionView.reloadData()
+        bagCollectionView.reloadData()
         
         let userAction = products[indexPath.item]
         
-        self.qq = indexPath.row
+        self.position = indexPath.row
         self.userAction = userAction
         
         performSegue(withIdentifier: "toProductViewController", sender: userAction)
@@ -144,11 +143,10 @@ extension BagViewController: UICollectionViewDataSource, UICollectionViewDelegat
 
        if segue.identifier == "toProductViewController"{
            let destinationVC = segue.destination as! ProductViewController
-           guard CollectionView.indexPathsForSelectedItems != nil else { return }
+           guard bagCollectionView.indexPathsForSelectedItems != nil else { return }
            
            destinationVC.selectedProduct = userAction
-           //destinationVC.way.append()
-           destinationVC.way.append(bagProducts[qq].category ?? "")
+           destinationVC.way.append(bagProducts[position].category ?? "")
        }
         
         if segue.identifier == "toOrderViewController"{

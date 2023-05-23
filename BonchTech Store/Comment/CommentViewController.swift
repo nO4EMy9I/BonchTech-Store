@@ -13,13 +13,15 @@ class CommentViewController: UIViewController {
 
     @IBOutlet weak var CommentTextView: UITextView!
     @IBOutlet weak var Rating: UISegmentedControl!
+    @IBOutlet weak var commentButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print(way)
+        commentButton.layer.cornerRadius = 15
         
-        CommentTextView.placeholder = "Оставьте отзыв"
+        CommentTextView.placeholder = "Спасибо за отзыв!"
         CommentTextView.layer.borderWidth = 1
         CommentTextView.layer.borderColor = UIColor.systemOrange.cgColor
         CommentTextView.layer.cornerRadius = 10

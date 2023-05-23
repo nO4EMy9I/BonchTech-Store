@@ -8,6 +8,5 @@
 import Foundation
 
 struct Specifications{
-    
     let Specifications: [String: Any]
 }

@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,34 +25,34 @@
                                     <constraint firstAttribute="height" constant="169" id="lYj-3r-f6D"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="LabelLabelLa belLabelLabelLabelLabel" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aju-4P-cNF">
-                                <rect key="frame" x="8" y="185" width="169" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Name" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aju-4P-cNF">
+                                <rect key="frame" x="8" y="185" width="169" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JVa-zs-W7C">
-                                <rect key="frame" x="8" y="233" width="41.666666666666664" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JVa-zs-W7C">
+                                <rect key="frame" x="8" y="233" width="10.333333333333336" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxf-BE-rRf">
-                                <rect key="frame" x="8" y="262" width="75" height="35"/>
+                                <rect key="frame" x="8" y="262" width="55" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add"/>
                                 <connections>
                                     <action selector="add:" destination="gTV-IL-0wX" eventType="touchUpInside" id="NEP-17-UJ6"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWG-Cb-yHs">
-                                <rect key="frame" x="57.666666666666657" y="233" width="41" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWG-Cb-yHs">
+                                <rect key="frame" x="26.333333333333332" y="233" width="10.333333333333332" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X69-dm-IaF">
-                                <rect key="frame" x="91" y="262" width="75" height="35"/>
+                                <rect key="frame" x="71" y="262" width="75" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                             </button>
@@ -71,7 +70,7 @@
                             <constraint firstItem="rD5-TX-jEa" firstAttribute="leading" secondItem="iLT-Mu-cnE" secondAttribute="leading" constant="8" id="f7L-yq-ZT6"/>
                             <constraint firstAttribute="bottom" secondItem="hxf-BE-rRf" secondAttribute="bottom" constant="8" id="hSe-ez-Qxf"/>
                             <constraint firstItem="rD5-TX-jEa" firstAttribute="top" secondItem="iLT-Mu-cnE" secondAttribute="top" constant="8" id="i4C-w8-uhM"/>
-                            <constraint firstItem="hxf-BE-rRf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JVa-zs-W7C" secondAttribute="bottom" constant="8" id="mZk-fe-t1S"/>
+                            <constraint firstItem="hxf-BE-rRf" firstAttribute="top" secondItem="JVa-zs-W7C" secondAttribute="bottom" constant="8" id="mZk-fe-t1S"/>
                             <constraint firstItem="aju-4P-cNF" firstAttribute="top" secondItem="rD5-TX-jEa" secondAttribute="bottom" constant="8" id="rVo-ug-vxA"/>
                             <constraint firstItem="oWG-Cb-yHs" firstAttribute="leading" secondItem="JVa-zs-W7C" secondAttribute="trailing" constant="8" id="wp8-m0-jMw"/>
                         </constraints>
@@ -87,12 +86,12 @@
             </constraints>
             <size key="customSize" width="145" height="275"/>
             <connections>
-                <outlet property="addButton" destination="hxf-BE-rRf" id="SzK-3R-UaE"/>
-                <outlet property="currentPrice" destination="JVa-zs-W7C" id="smB-xP-exy"/>
-                <outlet property="image" destination="rD5-TX-jEa" id="kfm-47-9Be"/>
+                <outlet property="addProductButton" destination="hxf-BE-rRf" id="SzK-3R-UaE"/>
+                <outlet property="currentPriceLabel" destination="JVa-zs-W7C" id="smB-xP-exy"/>
                 <outlet property="like" destination="X69-dm-IaF" id="t42-4g-Wzl"/>
-                <outlet property="name" destination="aju-4P-cNF" id="5Uo-mc-ruE"/>
-                <outlet property="oldPrice" destination="oWG-Cb-yHs" id="xzi-dN-cfW"/>
+                <outlet property="oldPriceLabel" destination="oWG-Cb-yHs" id="xzi-dN-cfW"/>
+                <outlet property="productImage" destination="rD5-TX-jEa" id="kfm-47-9Be"/>
+                <outlet property="productNameLabel" destination="aju-4P-cNF" id="5Uo-mc-ruE"/>
             </connections>
             <point key="canvasLocation" x="54.198473282442748" y="98.591549295774655"/>
         </collectionViewCell>

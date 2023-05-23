@@ -10,6 +10,8 @@ import Firebase
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseCore
+import CoreLocation
+import MapKit
 
 
 class APIManager {
@@ -24,6 +26,7 @@ class APIManager {
         return db
     }
     
+    // Получаем список категорий товаров
     func getMultipleCollection(completion: @escaping ([ProductCategory]?) -> Void) {
         let db = APIManager.configureFB()
         
@@ -47,6 +50,7 @@ class APIManager {
         }
     }
     
+    // Получает отзывы о товаре
     func getMultipleFeedback(category: String, product: String, completion: @escaping ([Feedback]?) -> Void){
         let db = APIManager.configureFB()
         
@@ -70,6 +74,7 @@ class APIManager {
         }
     }
     
+    // Получаем характеристики товара
     func getMultipleSpecification(category: String, product: String, completion: @escaping (Specifications?) -> Void) {
         let db = APIManager.configureFB()
         
@@ -92,6 +97,7 @@ class APIManager {
         }
     }
     
+    // Получаем информацию о конкретном продукте
     func getMultipleProduct(category: String, product: String, completion: @escaping (Product?) -> Void){
         let db = APIManager.configureFB()
         
@@ -110,6 +116,7 @@ class APIManager {
         }
     }
     
+    // Получаем список продуктов определенной категории
     func getMultipleAll(document: String, completion: @escaping ([Product]?) -> Void){
         let db = APIManager.configureFB()
         
@@ -133,7 +140,7 @@ class APIManager {
         }
     }
     
-    
+    // Получаем списко акций
     func getMultiplePromotion(document: String, completion: @escaping ([Promotion]?) -> Void){
         let db = APIManager.configureFB()
         
@@ -146,8 +153,6 @@ class APIManager {
             } else {
                 for document in querySnapshot!.documents {
                     
-                    //print("\(document.documentID) => \(document.data())")
-                    
                     let product = document.data()
                     
                     promotions.append(Promotion(name: product["name"] as? String ?? "", description: product["description"] as? String ?? ""))
@@ -157,7 +162,95 @@ class APIManager {
         }
     }
     
-    // Отправка на сервер информации о заказе
+    func getMultipleUser(userId: String, completion: @escaping (User?) -> Void){
+        let db = APIManager.configureFB()
+        
+        var user: User!
+        
+        db.collection("users").document(userId).getDocument { (querySnapshot, err) in
+            guard err == nil else {completion(nil); return}
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                
+                let data = querySnapshot!.data()
+                user = User(name: data!["name"] as! String, points: data!["points"] as! Int)
+            }
+            completion(user)
+        }
+    }
+    
+    
+    
+    func getMultipleShops(completion: @escaping ([Shop]?) -> Void){
+        let db = APIManager.configureFB()
+        
+        var shops = [Shop]()
+        
+        db.collection("shops").getDocuments() { (querySnapshot, err) in
+            guard err == nil else {completion(nil); return}
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    
+                    let data = document.data()
+                    
+                    print("Data: ", data)
+                    
+                    if let shopsData = data["shops"] as? [[String: Any]] {
+                        // Переберите элементы массива
+                        
+                        print("nice")
+                        for shopData in shopsData {
+                            // Извлеките нужные данные из словаря
+                            print(shopData)
+                            //let location = data["location"] as? GeoPoint
+                            
+                            if let name = shopData["store"] as? String,
+                               let latitude = shopData["latitude"] as? Double, let longitude = shopData["longitude"] as? Double {
+                                // Создайте объект Shop с полученными данными
+                                shops.append(Shop(street: name, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))
+                            }
+                        }
+                    }
+//                        if let name = data["store"] as? String,
+//                           let location = data["location"] as? GeoPoint {
+//                            // Создайте объект Shop с полученными данными
+//                            shops.append(Shop(street: name, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)))
+//                        }
+                    
+//                    shops.append(Shop(street: data["store"] as? String ?? "", coordinate: data["location"] as! CLLocationCoordinate2D ))
+                }
+            }
+            completion(shops)
+        }
+    }
+    
+    func addUser(name: String, email: String, userId: String){
+        
+        let db = APIManager.configureFB()
+        
+        var ref: DocumentReference? = nil
+        
+        ref = db.collection("users").document(userId)
+        
+        let data: [String: Any] = [
+            "name": name,
+            "email": email,
+            "points": 100
+        ]
+        
+        ref?.setData(data) { error in
+            if let error = error {
+                print("Ошибка создания документа: \(error)")
+            } else {
+                print("Документ успешно создан!")
+            }
+        }
+    }
+    
+    // Отправка на сервер отзыва
     func addComment(category: String, product: String, rating: Int, comment: String, user: String) -> String {
 
             let db = APIManager.configureFB()
@@ -180,6 +273,7 @@ class APIManager {
             return "\(ref!.documentID)"
     }
     
+    //Отправка на сервер информации о заказе
     func addDocument(name: String, phoneNumber: Int, city: String, address: String, idProducts: [String]) -> String {
 
         let db = APIManager.configureFB()
@@ -205,6 +299,7 @@ class APIManager {
         return "\(ref!.documentID )"
     }
     
+    // Получение фотограции из хранилища
     func getImage(imageSection: String, imageName: String, completeon: @escaping(UIImage) -> Void) {
             let storage = Storage.storage()
             let reference = storage.reference()

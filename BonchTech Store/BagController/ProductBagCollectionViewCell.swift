@@ -12,78 +12,72 @@ class ProductBagCollectionViewCell: UICollectionViewCell {
     var product: BagProduct!
     var fullProduct: Product!
     
-    @IBOutlet weak var ProductImage: UIImageView!
-    @IBOutlet weak var ProductName: UILabel!
-    @IBOutlet weak var ProductCount: UILabel!
-    @IBOutlet weak var OldPrice: UILabel!
-    @IBOutlet weak var CurrentPrice: UILabel!
+    @IBOutlet weak var productImage: UIImageView!
+    @IBOutlet weak var productNameLabel: UILabel!
+    @IBOutlet weak var productCountLabel: UILabel!
+    @IBOutlet weak var oldPriceLabel: UILabel!
+    @IBOutlet weak var currentPriceLabel: UILabel!
     
     weak var delegate: ProductCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        ProductImage.layer.cornerRadius = 10
+        productImage.layer.cornerRadius = 10
         // Установка скругления углов
         contentView.layer.cornerRadius = 10
     }
     
     func cellDesign(bagProduct: BagProduct, product: Product, cell: ProductBagCollectionViewCell){
-        
         self.product = bagProduct
         
-        ProductName.text = bagProduct.nameProduct
-        ProductCount.text = String(bagProduct.count)
-        CurrentPrice.text = String(product.currentPrice) + "₽"
+        cell.layer.borderWidth = 2
+        cell.layer.borderColor = UIColor.systemOrange.cgColor
+        cell.layer.cornerRadius = 15
+        
+        productNameLabel.text = bagProduct.nameProduct
+        productCountLabel.text = String(bagProduct.count)
+        currentPriceLabel.text = String(product.currentPrice) + "₽"
         if product.sale == true{
-            self.OldPrice.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+            self.oldPriceLabel.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
         } else {
-            self.OldPrice.isHidden = true
+            self.oldPriceLabel.isHidden = true
         }
+        APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: product.productImages.first ?? ""), completeon: { image in
+            
+            self.productImage.image = image
+        })
     }
-
     
+    //Увеличение единиц товара в корзине
     @IBAction func AddProductUnit(_ sender: Any) {
         CoreDataManager.shared.updataProduct(with: product.nameProduct!, newCount: (Int(product.count) + 1))
-        
         guard let collectionView = self.superview as? UICollectionView else {
             return
         }
         
-        ProductCount.text = "\(product.count)"
+        productCountLabel.text = "\(product.count)"
         delegate?.didUpdateProductQuantity()
         collectionView.reloadData()
         
     }
+    
+    //Уменьшение удиниц товара в корзине
     @IBAction func DeleteProductUnit(_ sender: UIButton) {
         
         if product.count == 1 {
             CoreDataManager.shared.deleteProduct(with: product.nameProduct!)
             print("товара был один")
             
-// тоже работает но обновляет всю таблицу целиком
             guard let collectionView = self.superview as? UICollectionView else {
                 return
             }
             delegate?.didUpdateProductQuantity()
             collectionView.reloadData()
-            
-            
-// удаляет ячейку
-//            guard let collectionView = self.superview as? UICollectionView else {
-//                return
-//            }
-//            let point = sender.convert(CGPoint.zero, to: collectionView)
-//            guard let indexPath = collectionView.indexPathForItem(at: point),
-//                  let cell = collectionView.cellForItem(at: indexPath) as? UICollectionViewCell else {
-//                return
-//            }
-//            collectionView.deleteItems(at: [indexPath])
-            
         } else {
             CoreDataManager.shared.updataProduct(with: product.nameProduct!, newCount: (Int(product.count) - 1))
             
-            ProductCount.text = "\(product.count)"
+            productCountLabel.text = "\(product.count)"
             
             guard let collectionView = self.superview as? UICollectionView else {
                 return

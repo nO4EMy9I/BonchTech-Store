@@ -14,13 +14,8 @@ class SpecificationsProductTableViewController: UITableViewController {
     var settings: [[String:String]] = []
     var way: [String] = []
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         APIManager.shared.getMultipleSpecification(category: way[0], product: way[1] ) { specifications in
             guard specifications != nil else {return}
             
@@ -29,10 +24,9 @@ class SpecificationsProductTableViewController: UITableViewController {
             for (_, value) in specifications!.Specifications{
                 self.settings.append(value as! [String : String])
             }
-            
             self.tableView.reloadData()
         }
-
+        
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -40,7 +34,6 @@ class SpecificationsProductTableViewController: UITableViewController {
 }
 
 extension SpecificationsProductTableViewController {
-    
         
     override func numberOfSections(in tableView: UITableView) -> Int {
 

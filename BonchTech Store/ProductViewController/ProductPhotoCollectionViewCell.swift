@@ -9,7 +9,7 @@ import UIKit
 
 class ProductPhotoCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var ProductPhotoImage: UIImageView!
+    @IBOutlet weak var productPhotoImage: UIImageView!
     
     
     

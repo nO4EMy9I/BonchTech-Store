@@ -19,16 +19,13 @@ class SpecificationsProfuctTableViewCell: UITableViewCell {
 
         
     }
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var characteristicLabel: UILabel!
+    @IBOutlet weak var valueOfCharacteristicLabel: UILabel!
     
     func cellDesign(cell: SpecificationsProfuctTableViewCell, key: String, value: String){
         
-        cell.label.text = key
-        cell.label2.text = value
-        
-        
-        
+        characteristicLabel.text = key
+        valueOfCharacteristicLabel.text = value
     }
     
 }

@@ -41,7 +41,7 @@ class CategoryViewController: UICollectionViewController{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! ProductCategoryViewCell
     
-        cell.CategoryTitle.text = categories[indexPath.item].title
+        cell.categoryLabel.text = categories[indexPath.item].title
     
         return cell
     }

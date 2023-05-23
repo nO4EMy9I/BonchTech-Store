@@ -9,11 +9,11 @@ import UIKit
 
 class ProductCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var currentPrice: UILabel!
-    @IBOutlet weak var oldPrice: UILabel!
-    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var productImage: UIImageView!
+    @IBOutlet weak var productNameLabel: UILabel!
+    @IBOutlet weak var currentPriceLabel: UILabel!
+    @IBOutlet weak var oldPriceLabel: UILabel!
+    @IBOutlet weak var addProductButton: UIButton!
     
     @IBOutlet weak var like: UIButton!
     
@@ -32,26 +32,26 @@ class ProductCollectionViewCell: UICollectionViewCell {
         self.product = product
         APIManager.shared.getImage(imageSection: "productImages", imageName: String(describing: product.productImages.first ?? ""), completeon: { image in
             
-            self.image.image = image
+            self.productImage.image = image
         })
         
-        self.name.text = product.name
-        self.name.numberOfLines = 2
+        self.productNameLabel.text = product.name
+        self.productNameLabel.numberOfLines = 2
         //self.name.lineBreakMode = .byWordWrapping
-        self.name.lineBreakMode = .byTruncatingTail
+        self.productNameLabel.lineBreakMode = .byTruncatingTail
         
-        self.currentPrice.text = String("\(product.currentPrice)₽")
+        self.currentPriceLabel.text = String("\(product.currentPrice)₽")
         if product.sale == false{
-            oldPrice.isHidden = true
+            oldPriceLabel.isHidden = true
         } else {
-            self.oldPrice.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
+            self.oldPriceLabel.attributedText = NSAttributedString(string: "\(String(product.oldPrice))₽", attributes: [NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
         }
-        self.image.layer.cornerRadius = 15
+        self.productImage.layer.cornerRadius = 15
         
-        self.addButton.backgroundColor = UIColor.systemOrange
-        self.addButton.layer.cornerRadius = 15
-        self.addButton.setTitle("В корзину", for: .normal)
-        self.addButton.setTitleColor(.white, for: .normal)
+        self.addProductButton.backgroundColor = UIColor.systemOrange
+        self.addProductButton.layer.cornerRadius = 15
+        self.addProductButton.setTitle("В корзину", for: .normal)
+        self.addProductButton.setTitleColor(.white, for: .normal)
         
         cell.layer.cornerRadius = 15
         cell.layer.borderWidth = 2
@@ -79,6 +79,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
 //        cell.layer.rasterizationScale = UIScreen.main.scale
     }
     
+    //Добавление товара в корзину
     func addToCart(_ product: Product) {
         if CoreDataManager.shared.fetchProduct(product.name) == nil {
             CoreDataManager.shared.createProduct(name: product.name, category: category, price: Int64(product.currentPrice))
@@ -89,7 +90,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
             print("товар был")
         }
     }
-
+    
     @IBAction func add(_ sender: UIButton) {
         sender.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         

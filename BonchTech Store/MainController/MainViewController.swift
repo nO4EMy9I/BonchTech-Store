@@ -13,20 +13,20 @@ class MainViewController: UIViewController {
     var promotions = [Promotion]()
     var userAction: Promotion!
     
-    @IBOutlet weak var PromotionsCollection: UICollectionView!
+    @IBOutlet weak var promotionsCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PromotionsCollection.dataSource = self
-        PromotionsCollection.delegate = self
-        PromotionsCollection.showsHorizontalScrollIndicator = false
+        promotionsCollectionView.dataSource = self
+        promotionsCollectionView.delegate = self
+        promotionsCollectionView.showsHorizontalScrollIndicator = false
 
         APIManager.shared.getMultiplePromotion(document: "sale", completion: {products in
             guard products != nil else {return}
             self.promotions = products!
 
-            self.PromotionsCollection.reloadData()
+            self.promotionsCollectionView.reloadData()
         })
         
         let flowLayout = UICollectionViewFlowLayout()
@@ -35,9 +35,9 @@ class MainViewController: UIViewController {
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
 
 
-        PromotionsCollection.collectionViewLayout = flowLayout
-        PromotionsCollection.delegate = self
-        PromotionsCollection.dataSource = self
+        promotionsCollectionView.collectionViewLayout = flowLayout
+        promotionsCollectionView.delegate = self
+        promotionsCollectionView.dataSource = self
     }
     
 //    override func viewWillLayoutSubviews() {
@@ -87,7 +87,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 
        if segue.identifier == "toPromotionViewController"{
            let destinationVC = segue.destination as! PromotionViewController
-           guard PromotionsCollection.indexPathsForSelectedItems != nil else { return }
+           guard promotionsCollectionView.indexPathsForSelectedItems != nil else { return }
            destinationVC.promotion = userAction
        }
     }
